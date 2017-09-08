@@ -4,11 +4,11 @@ pages:
 - raft: index.md
 - package raft:
   - Package: "raft--index.md"
-  - type _Role: "raft-_Role.md"
-  - class Server: "raft-Server.md"
   - class _LeaderRole: "raft-_LeaderRole.md"
   - class _FollowerRole: "raft-_FollowerRole.md"
   - class _CandidateRole: "raft-_CandidateRole.md"
+  - type _Role: "raft-_Role.md"
+  - class Server: "raft-Server.md"
 - package builtin:
   - Package: "builtin--index.md"
   - interface ReadSeq: "builtin-ReadSeq.md"

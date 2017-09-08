@@ -1,4 +1,4 @@
-Raft implements the raft protocols as described on https://raft.github.io/
+Raft implements the raft protocol as described on https://raft.github.io/
 
 package will have the following classes/actors
 
@@ -19,7 +19,7 @@ package will have the following classes/actors
 
 ## Private Types
 
-* [type _Role](raft-_Role.md)
 * [class _LeaderRole](raft-_LeaderRole.md)
 * [class _FollowerRole](raft-_FollowerRole.md)
 * [class _CandidateRole](raft-_CandidateRole.md)
+* [type _Role](raft-_Role.md)

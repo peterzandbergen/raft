@@ -1,5 +1,5 @@
 """
-Raft implements the raft protocols as described on https://raft.github.io/
+Raft implements the raft protocol as described on https://raft.github.io/
 
 package will have the following classes/actors
 
@@ -20,25 +20,5 @@ class Server
   Server class implements the raft server behaviour.
   """
   let _role: _Role = _CandidateRole
-
-
-class _LeaderRole
-  """
-  LeaderRole implements the Leader behaviour of the server.
-  """
-
-
-
-class _FollowerRole
-  """
-  LeaderRole implements the Leader behaviour of the server.
-  """
-
-
-
-class _CandidateRole
-  """
-  LeaderRole implements the Leader behaviour of the server.
-  """
 
 
