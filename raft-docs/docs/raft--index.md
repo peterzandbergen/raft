@@ -14,12 +14,12 @@ package will have the following classes/actors
 
 ## Public Types
 
-* [class Server](.-Server.md)
+* [class Server](raft-Server.md)
 
 
 ## Private Types
 
-* [type _Role](.-_Role.md)
-* [class _LeaderRole](.-_LeaderRole.md)
-* [class _FollowerRole](.-_FollowerRole.md)
-* [class _CandidateRole](.-_CandidateRole.md)
+* [type _Role](raft-_Role.md)
+* [class _LeaderRole](raft-_LeaderRole.md)
+* [class _FollowerRole](raft-_FollowerRole.md)
+* [class _CandidateRole](raft-_CandidateRole.md)

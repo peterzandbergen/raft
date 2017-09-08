@@ -1,5 +1,8 @@
 # Server
 
+Server class implements the raft server behaviour.
+
+
 ```pony
 class ref Server
 ```
@@ -15,7 +18,7 @@ new iso create()
 
 #### Returns
 
-* [Server](.-Server) iso^
+* [Server](raft-Server) iso^
 
 ---
 

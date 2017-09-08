@@ -1,5 +1,8 @@
 # _CandidateRole
 
+LeaderRole implements the Leader behaviour of the server.
+
+
 ```pony
 class ref _CandidateRole
 ```
@@ -15,7 +18,7 @@ new iso create()
 
 #### Returns
 
-* [_CandidateRole](.-_CandidateRole) iso^
+* [_CandidateRole](raft-_CandidateRole) iso^
 
 ---
 

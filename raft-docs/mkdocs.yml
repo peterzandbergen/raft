@@ -2,13 +2,13 @@ site_name: raft
 theme: readthedocs
 pages:
 - raft: index.md
-- package .:
-  - Package: ".--index.md"
-  - type _Role: ".-_Role.md"
-  - class Server: ".-Server.md"
-  - class _LeaderRole: ".-_LeaderRole.md"
-  - class _FollowerRole: ".-_FollowerRole.md"
-  - class _CandidateRole: ".-_CandidateRole.md"
+- package raft:
+  - Package: "raft--index.md"
+  - type _Role: "raft-_Role.md"
+  - class Server: "raft-Server.md"
+  - class _LeaderRole: "raft-_LeaderRole.md"
+  - class _FollowerRole: "raft-_FollowerRole.md"
+  - class _CandidateRole: "raft-_CandidateRole.md"
 - package builtin:
   - Package: "builtin--index.md"
   - interface ReadSeq: "builtin-ReadSeq.md"
