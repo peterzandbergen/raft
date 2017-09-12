@@ -15,10 +15,10 @@ package will have the following classes/actors
 
 type _Role is (_LeaderRole | _FollowerRole | _CandidateRole)
 
-class Server
-  """
-  Server class implements the raft server behaviour.
-  """
-  let _role: _Role = _CandidateRole
+type _Request is (_RequestVoteRequest | _AppendEntriesRequest)  
+type _Response is (_RequestVoteResponse | _AppendEntriesResponse)
+type _Message is (_Request | _Response)
 
 
+trait _MessageHandler
+  fun handle_message(server: Server, msg: _Message iso) 

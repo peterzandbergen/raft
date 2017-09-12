@@ -1,6 +1,6 @@
 use "ponytest"
 
-use "raft"
+use raft = "raft"
 
 
 actor Main is TestList
@@ -12,16 +12,12 @@ actor Main is TestList
     // No sub tests yet.
     None 
 
-  fun tag tests(test: PonyTest) =>
-    test(_TestOne)
+  fun tag tests(test: PonyTest) 
+  """
+  tests calls the tests in the sub package.
+  """
+  =>
+    test(raft.Main.make().tests(test))
 
     
-
-class _TestOne is UnitTest
-
-  fun ref apply(h: TestHelper)  =>
-    h.fail("Not implemented yet")
-
-  fun name(): String =>
-    "_TestOne"
 
