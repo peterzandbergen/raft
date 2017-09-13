@@ -12,12 +12,11 @@ actor Main is TestList
     // No sub tests yet.
     None 
 
-  fun tag tests(test: PonyTest) 
-  """
-  tests calls the tests in the sub package.
-  """
-  =>
-    test(raft.Main.make().tests(test))
+  fun tag tests(test: PonyTest) =>
+    """
+    tests calls the tests in the sub package.
+    """
+    raft.Main.make().tests(test)
 
     
 
