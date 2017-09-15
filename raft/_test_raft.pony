@@ -11,12 +11,12 @@ actor Main is TestList
     None 
 
   fun tag tests(test: PonyTest) =>
-    test(_TestAppendEntriesAsFollower)
-    test(_TestAppendEntriesAsLeader)
+    test(_TestHeartbeat)
+    test(_TestAppendEntriesWithEntry)
 
     
 
-class _TestAppendEntriesAsFollower is UnitTest
+class _TestHeartbeat is UnitTest
   """
   Test if the append_entries generates a notify in time.
   """
@@ -36,8 +36,14 @@ class _TestAppendEntriesAsFollower is UnitTest
       // Use a lambda to catch the result.
       {(resp: AppendEntriesResponse iso) => 
         // Receive the response and call it a success.
-        h.complete(true)
-        }
+        if not resp.success then 
+          h.log("success false")
+          h.log("Msg: " + resp.error_msg)
+          h.complete(false)
+        else
+          h.complete(resp.error_msg.size() == 0)
+        end
+      }
       )
 
     h.long_test(3_000_000_000)
@@ -48,7 +54,7 @@ class _TestAppendEntriesAsFollower is UnitTest
 
 
 
-class _TestAppendEntriesAsLeader is UnitTest
+class _TestAppendEntriesWithEntry is UnitTest
   """
   Test if the append_entries generates a notify in time.
   """
@@ -59,16 +65,23 @@ class _TestAppendEntriesAsLeader is UnitTest
     let server = Server
 
     // Send AppendEntriesRequest
-    server.append_entries(AppendEntriesRequest.heart_beat(
-      0, // term
-      0, // leader_id
+    server.append_entries(AppendEntriesRequest(
+      1, // term
+      1, // leader_id
       0,
       0,
+      recover val [LogEntry(1, 1)] end,
       0),
       // Use a lambda to catch the result.
       {(resp: AppendEntriesResponse iso) => 
         // Receive the response and call it a success.
-        h.complete(true)
+        if not resp.success then 
+          h.log("success false")
+          h.log("Msg: " + resp.error_msg)
+          h.complete(false)
+        else
+          h.complete(resp.error_msg.size() == 0)
+        end
       }
       )
 

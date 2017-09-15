@@ -56,29 +56,49 @@ actor Server
     - to serve as a heartbeat
 
     """
+    // 1. Reply false if term < currentTerm (§5.1)
+    if (req.term < current_term)
+    then
+      notify(AppendEntriesResponse(
+        current_term,
+        false,
+        "Case 1 failed"))
+      return
+    end
+
+
+    // 2. Reply false if log doesn’t contain an entry at prevLogIndex
+    // whose term matches prevLogTerm (§5.3)
     try
-      if 
-        // Test the term.
-        (req.term < current_term) or
-        // Reply false if the term at prev index and the req.term are 
-        // not equal.
-        (req.prev_log_index > log.size()) or 
+      if (req.prev_log_index >= log.size()) or 
         (log(req.prev_log_index)?.term != req.term)
       then
         notify(AppendEntriesResponse(
           current_term,
-          false))
+          false,
+          "Case 2 failed"))
         return
       end
+    else
+      notify(AppendEntriesResponse(
+        current_term,
+        false,
+        "Exception 1"))
+        return
+    end
 
+    // Heartbeat.
+    if req.log.size() == 0 then
+      notify(AppendEntriesResponse(
+        current_term,
+        true))
+        return
+    end
+
+    var errmsg: String = ""
+    try
       // Test the new logs against my logs.
-      if req.log.size() == 0 then
-        notify(AppendEntriesResponse(
-          current_term,
-          true))
-          return
-      end
-
+      errmsg = "Testing entries."
       // Process the new entries.
       var last_index: U64 = 0
       for le in req.log.values() do 
@@ -97,12 +117,13 @@ actor Server
           commit_index = last_index.min(req.leader_commit)
         end
       end
+    else
+      notify(AppendEntriesResponse(current_term, true, errmsg))
+      return
+    end
 
       // Signal result
       notify(AppendEntriesResponse(current_term, true))
-    else
-      notify(AppendEntriesResponse(current_term, false))
-    end
 
 
   be request_vote(

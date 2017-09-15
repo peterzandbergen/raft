@@ -46,11 +46,14 @@ class AppendEntriesResponse
   """  
   let term: U64 val
   let success: Bool val
+  let error_msg: String
 
   new iso create(
     term': U64 val,
-    success': Bool val) =>
+    success': Bool val,
+    error_msg': String = "") =>
 
     term = term'
     success = success'
+    error_msg = error_msg'
 

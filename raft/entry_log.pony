@@ -1,8 +1,12 @@
 
 
-class LogEntry
-  let term: U64 = 0
-  let index: U64 = 0
+class val LogEntry
+  let term: U64
+  let index: U64
+
+  new val create(term': U64, index': U64) =>
+    term = term'
+    index = index'
 
 
 class EntryLog
