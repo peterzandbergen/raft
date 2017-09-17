@@ -18,21 +18,25 @@ actor Main is TestList
 
 class _TestHeartbeat is UnitTest
   """
-  Test if the append_entries generates a notify in time.
+  Test if a heartbeat from a new leader to a new follower
+  returns the correct result.
   """
 
   fun ref apply(h: TestHelper)  =>
 
     // Create the server.
-    let server = Server
-
-    // Send AppendEntriesRequest
+    let server = Server.load(
+      1, 
+      1, 
+      recover EntryLog end)
+    
+    // Send AppendEntriesRequest from a server that has no entries.
     server.append_entries(AppendEntriesRequest.heart_beat(
       1, // term
       1, // leader_id
-      0,
-      0,
-      0),
+      0, // prev_log_index
+      0, // prev_log_term
+      0), // leader_commit
       // Use a lambda to catch the result.
       {(resp: AppendEntriesResponse iso) => 
         // Receive the response and call it a success.
@@ -41,7 +45,7 @@ class _TestHeartbeat is UnitTest
           h.log("Msg: " + resp.error_msg)
           h.complete(false)
         else
-          h.complete(resp.error_msg.size() == 0)
+          h.complete(true)
         end
       }
       )
@@ -50,7 +54,7 @@ class _TestHeartbeat is UnitTest
 
 
   fun name(): String =>
-    "_TestAppendEntriesAsFollower"
+    "_TestHeartbeat"
 
 
 
@@ -61,8 +65,11 @@ class _TestAppendEntriesWithEntry is UnitTest
 
   fun ref apply(h: TestHelper)  =>
 
-    // Create the server.
-    let server = Server
+    // Create an virgin server.
+    let server = Server.load(
+      1, 
+      1, 
+      recover EntryLog end)
 
     // Send AppendEntriesRequest
     server.append_entries(AppendEntriesRequest(
@@ -80,10 +87,13 @@ class _TestAppendEntriesWithEntry is UnitTest
           h.log("Msg: " + resp.error_msg)
           h.complete(false)
         else
-          h.complete(resp.error_msg.size() == 0)
+          h.complete(true)
         end
       }
       )
+
+    // Investigate the state of the server.
+    
 
     h.long_test(3_000_000_000)
 

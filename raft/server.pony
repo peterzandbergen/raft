@@ -11,7 +11,6 @@ primitive CandidateRole
 type Role is (FollowerRole | CandidateRole | LeaderRole)
 
 
-
 actor Server
   """
   Server class implements the raft server behaviour.
@@ -35,14 +34,24 @@ actor Server
     """
     None
 
-  new load() =>
+
+  new load(
+    current_term': U64,
+    voted_for': I32,
+    log': EntryLog iso) =>
     """
     Loads a persisted state.
     """
-    None
+    current_term = current_term'
+    voted_for = voted_for'
+    log = consume log'
+
 
   fun save() =>
     None
+
+  be _access(f: {(Server box)} val) =>
+    f(this)
 
 
   be append_entries(
@@ -66,34 +75,41 @@ actor Server
       return
     end
 
+    // Process heartbeat.
+    if req.log.size() == 0 then
+      notify(AppendEntriesResponse(
+        current_term,
+        true,
+        "heatbeat ok"))
+      return
+    end
+
 
     // 2. Reply false if log doesn’t contain an entry at prevLogIndex
     // whose term matches prevLogTerm (§5.3)
+    // TODO: handle special case for empty log on server and 
+    // prev_log_index == 0
     try
-      if (req.prev_log_index >= log.size()) or 
-        (log(req.prev_log_index)?.term != req.term)
-      then
-        notify(AppendEntriesResponse(
-          current_term,
-          false,
-          "Case 2 failed"))
-        return
+      if (req.prev_log_index > 0) and (log.size() > 0) then
+        if
+          (req.prev_log_index >= log.size()) or 
+          (log(req.prev_log_index)?.term != req.term)
+        then
+          notify(AppendEntriesResponse(
+            current_term,
+            false,
+            "Case 2 failed"))
+          return
+        end
       end
     else
       notify(AppendEntriesResponse(
         current_term,
         false,
-        "Exception 1"))
-        return
+        "Exception at case 2"))
+      return
     end
 
-    // Heartbeat.
-    if req.log.size() == 0 then
-      notify(AppendEntriesResponse(
-        current_term,
-        true))
-        return
-    end
 
     var errmsg: String = ""
     try
@@ -122,8 +138,8 @@ actor Server
       return
     end
 
-      // Signal result
-      notify(AppendEntriesResponse(current_term, true))
+    // Signal result
+    notify(AppendEntriesResponse(current_term, true))
 
 
   be request_vote(
