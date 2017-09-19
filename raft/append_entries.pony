@@ -1,5 +1,5 @@
 interface AppendEntriesNotify
-  fun apply(resp: AppendEntriesResponse iso) 
+  fun apply(resp: AppendEntriesResponse val) 
 
 class val AppendEntriesRequest
   let term: U64 val

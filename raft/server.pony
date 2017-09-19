@@ -48,6 +48,9 @@ actor Server
 
 
   fun save() =>
+    """
+    Save the state of the server to ...
+    """ 
     None
 
   be _ro_access(f: {(Server box)} val) =>
@@ -59,7 +62,7 @@ actor Server
 
   be append_entries(
     req: AppendEntriesRequest val,
-    notify: AppendEntriesNotify iso
+    notify: AppendEntriesNotify val
     ) =>
     """
     append_entries is used in two cases:
@@ -156,6 +159,7 @@ actor Server
     match role
     | LeaderRole =>
       // Send heartbeat to followers.
+      _send_heartbeats()
       None
     | FollowerRole => 
       role = CandidateRole
@@ -167,10 +171,8 @@ actor Server
 
 
   be request_vote(
-    term: U64,
-    candidate_id: U64,
-    last_log_index: U64,
-    last_log_term: U64) =>
+    req: RequestVoteRequest val,
+    notify: RequestVoteNotify val) =>
     """
     This behaviour determines if the requestor can become the 
     leader.
@@ -188,4 +190,9 @@ actor Server
   be install_snapshot() =>
     None
 
+  fun _send_heartbeats() =>
+    """
+    Send a heartbeat to all known followers.
+    """
+    None
 
