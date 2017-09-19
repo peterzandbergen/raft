@@ -149,7 +149,7 @@ actor Server
     Handle a timer event. 
 
     - When the server is a follower switch to candidate mode.
-    - When the server is a leadersend out a 
+    - When the server is a leader send out a 
       heartbeat to all followers.
     """
 
