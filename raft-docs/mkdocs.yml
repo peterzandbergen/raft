@@ -2,13 +2,24 @@ site_name: raft
 theme: readthedocs
 pages:
 - raft: index.md
-- package raft:
-  - Package: "raft--index.md"
-  - class _LeaderRole: "raft-_LeaderRole.md"
-  - class _FollowerRole: "raft-_FollowerRole.md"
-  - class _CandidateRole: "raft-_CandidateRole.md"
-  - type _Role: "raft-_Role.md"
-  - class Server: "raft-Server.md"
+- package .:
+  - Package: ".--index.md"
+- package ./raft:
+  - Package: ".-raft--index.md"
+  - primitive LeaderRole: ".-raft-LeaderRole.md"
+  - primitive FollowerRole: ".-raft-FollowerRole.md"
+  - primitive CandidateRole: ".-raft-CandidateRole.md"
+  - type Role: ".-raft-Role.md"
+  - actor Server: ".-raft-Server.md"
+  - class LogEntry: ".-raft-LogEntry.md"
+  - class EntryLog: ".-raft-EntryLog.md"
+  - class _RequestVoteRequest: ".-raft-_RequestVoteRequest.md"
+  - class _RequestVoteResponse: ".-raft-_RequestVoteResponse.md"
+  - class _AppendEntriesRequest: ".-raft-_AppendEntriesRequest.md"
+  - class _AppendEntriesResponse: ".-raft-_AppendEntriesResponse.md"
+  - interface AppendEntriesNotify: ".-raft-AppendEntriesNotify.md"
+  - class AppendEntriesRequest: ".-raft-AppendEntriesRequest.md"
+  - class AppendEntriesResponse: ".-raft-AppendEntriesResponse.md"
 - package builtin:
   - Package: "builtin--index.md"
   - interface ReadSeq: "builtin-ReadSeq.md"
