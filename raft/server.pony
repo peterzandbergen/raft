@@ -15,7 +15,7 @@ actor Server
   """
   Server class implements the raft server behaviour.
   """
-  var _role: Role = FollowerRole
+  var role: Role = FollowerRole
   // Persistent state for all server roles.
   var current_term: U64 = 0
   var voted_for: I32 = -1 // is undetermined.
@@ -50,7 +50,10 @@ actor Server
   fun save() =>
     None
 
-  be _access(f: {(Server box)} val) =>
+  be _ro_access(f: {(Server box)} val) =>
+    """
+    Give readonly access to the server. Used in testing.
+    """
     f(this)
 
 
@@ -123,12 +126,11 @@ actor Server
           if log(le.index)?.term != le.term then
             // Remove this and following entries.
             log.truncate(le.index)
-          else
-            // Append the entry.
-            log.push(le)
-            last_index = le.index
           end
         end
+        // Append the entry and update commit index.
+        log.push(le)
+        last_index = le.index
         if req.leader_commit > commit_index then
           commit_index = last_index.min(req.leader_commit)
         end
@@ -140,6 +142,28 @@ actor Server
 
     // Signal result
     notify(AppendEntriesResponse(current_term, true))
+
+
+  be handle_timer() =>
+    """
+    Handle a timer event. 
+
+    - When the server is a follower switch to candidate mode.
+    - When the server is a leader send out a 
+      heartbeat to all followers.
+    """
+
+    match role
+    | LeaderRole =>
+      // Send heartbeat to followers.
+      None
+    | FollowerRole => 
+      role = CandidateRole
+
+    | CandidateRole => 
+      // Send out vote messages.
+      None
+    end
 
 
   be request_vote(
@@ -164,14 +188,4 @@ actor Server
   be install_snapshot() =>
     None
 
-
-  be election_timeout() =>
-    """
-    The election_timeout is called in the follower role 
-    when this server failed to receive a 
-    heartbeat from the server.
-
-    This puts the server in the CandidateRole.
-    """
-    None
 
