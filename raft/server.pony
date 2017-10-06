@@ -1,15 +1,10 @@
 use "collections"
 use "time"
 
-
 primitive LeaderRole
 primitive FollowerRole
 primitive CandidateRole
-
-
-
 type Role is (FollowerRole | CandidateRole | LeaderRole)
-
 
 actor Server
   """
@@ -23,10 +18,8 @@ actor Server
   // Volatile state
   var commit_index: U64 = 0
   var last_applied: U64 = 0
-  // State only for leaders
-  var next_index: Map[U64, U64] = next_index.create()
-  var match_index: Map[U64, U64] = match_index.create()
-
+  // State only for leaders, one entry per follower.
+  let client_state: MapIs[String, ClientState] = client_state.create()
 
   new create() =>
     """
@@ -34,18 +27,26 @@ actor Server
     """
     None
 
-
   new load(
     current_term': U64,
     voted_for': I32,
-    log': EntryLog iso) =>
+    log': EntryLog iso,
+    client_ids: Seq[String] val) =>
     """
-    Loads a persisted state.
+    - Loads a persisted state.
+    - Initialize the clients from config.
     """
     current_term = current_term'
     voted_for = voted_for'
+    let last_log_index = if log.size() > 0 then
+      try log(log.size() - 1)?.index + 1 else 0 end
+    else
+      0
+    end
     log = consume log'
-
+    for id in client_ids.values() do
+      client_state(id) = ClientState(id, last_log_index + 1, 0)
+    end
 
   fun save() =>
     """
@@ -90,7 +91,6 @@ actor Server
       return
     end
 
-
     // 2. Reply false if log doesn’t contain an entry at prevLogIndex
     // whose term matches prevLogTerm (§5.3)
     // TODO: handle special case for empty log on server and 
@@ -115,7 +115,6 @@ actor Server
         "Exception at case 2"))
       return
     end
-
 
     var errmsg: String = ""
     try
@@ -142,10 +141,8 @@ actor Server
       notify(AppendEntriesResponse(current_term, true, errmsg))
       return
     end
-
     // Signal result
     notify(AppendEntriesResponse(current_term, true))
-
 
   be handle_timer() =>
     """
@@ -157,10 +154,7 @@ actor Server
     """
 
     match role
-    | LeaderRole =>
-      // Send heartbeat to followers.
-      _send_heartbeats()
-      None
+    | LeaderRole => _send_heartbeats()
     | FollowerRole => 
       role = CandidateRole
 
@@ -168,7 +162,6 @@ actor Server
       // Send out vote messages.
       None
     end
-
 
   be request_vote(
     req: RequestVoteRequest val,
@@ -179,13 +172,11 @@ actor Server
     """
     None
 
-
   be client_request() =>
     """
     This behaviour processes the requests from the client. TBD.
     """ 
     None
-
 
   be install_snapshot() =>
     None

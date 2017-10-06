@@ -11,7 +11,7 @@
 			"file": "raft/server.pony",
 			"settings":
 			{
-				"buffer_size": 3775,
+				"buffer_size": 4200,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -128,15 +128,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3775,
+						"buffer_size": 4200,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2117,
-								2117
+								527,
+								527
 							]
 						],
 						"settings":
@@ -147,12 +147,17 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 941.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				}
+			]
+		},
+		{
+			"sheets":
+			[
 			]
 		}
 	],
@@ -173,11 +178,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
