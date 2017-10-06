@@ -11,7 +11,25 @@
 			"file": "raft/server.pony",
 			"settings":
 			{
-				"buffer_size": 4200,
+				"buffer_size": 4427,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_test.pony",
+			"settings":
+			{
+				"buffer_size": 266,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "raft/_test.pony",
+			"settings":
+			{
+				"buffer_size": 4545,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -74,6 +92,8 @@
 	},
 	"expanded_folders":
 	[
+		"/home/peza/Documents/pony-ws/raft",
+		"/home/peza/Documents/pony-ws/raft/raft",
 		"/home/peza/ponybuild/ponyc/packages"
 	],
 	"file_history":
@@ -119,7 +139,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -128,15 +148,46 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4200,
+						"buffer_size": 4427,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								527,
-								527
+								4408,
+								4408
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Pony Language/pony.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1919.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "_test.pony",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 266,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								266,
+								266
 							]
 						],
 						"settings":
@@ -148,6 +199,37 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "raft/_test.pony",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4545,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1315,
+								1315
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Pony Language/pony.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 248.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -167,7 +249,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 35.0
 	},
 	"layout":
 	{
