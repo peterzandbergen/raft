@@ -16,6 +16,7 @@ class _TestHeartbeat is UnitTest
   Test if a heartbeat from a new leader to a new follower
   returns the correct result.
   """
+  fun name(): String =>"raft/_TestHeartbeat"
 
   fun ref apply(h: TestHelper)  =>
     // Create the server.
@@ -49,7 +50,6 @@ class _TestHeartbeat is UnitTest
 
     h.long_test(3_000_000_000)
 
-  fun name(): String =>"raft/_TestHeartbeat"
 
 class _TestHeartbeatTimeout is UnitTest
   """
@@ -177,5 +177,3 @@ class _TestAppendEntriesWithTwoEntries is UnitTest
       }
     )
     h.long_test(3_000_000_000)
-
-
